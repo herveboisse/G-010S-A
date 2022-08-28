@@ -151,3 +151,12 @@ If the boot is successful the module will continue to boot from the new firmware
 by setting ```commit``` to the ```next_active``` image. If the initial boot
 fails for some reason the module should revert to the old firmware and reset
 ```next_active```.
+
+## Unbricking
+
+In case the SFP module gets bricked during an update see the guide
+[here](unbricking.md). Unless you have a "pin 6" issue with your host it is
+highly recommended to follow the [Preparation](unbricking.md#preparation) step
+in the guide before making changes to unlock the bootloader and make unbricking
+easier.
+
