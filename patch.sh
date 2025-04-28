@@ -29,12 +29,4 @@ do
     cd "$PATCH_DIR" && { ./patch.sh "$ROOTFS_ABS"; cd ../..; }
 done
 
-printf "\nCreating new squashfs image\n"
-mksquashfs "$ROOTFS" patched.squashfs -noappend -comp xz -b 262144
-
-OUT="${IMAGE%.*}_patched.bin"
-cat "$DIR/uImage" patched.squashfs > "$OUT"
-dd if=/dev/null of="$OUT" bs=1 seek=6291456
-printf "\n%s created successfully\n" "$OUT"
-
-rm patched.squashfs
+./repack.sh "$IMAGE"
