@@ -1,0 +1,11 @@
+--- a/etc/config/gpon	2019-12-26 15:05:24.000000000 +0100
++++ b/etc/config/gpon	2025-05-12 18:14:16.221791300 +0200
+@@ -19,7 +19,7 @@
+ 	option 'nLaserOffset' '0'
+ 	option 'nLaserEnEndExt' '0'
+ 	option 'nLaserEnStartExt' '0'
+-	option 'nDyingGaspEnable' '1'
++	option 'nDyingGaspEnable' '0' # hack
+ 	option 'nDyingGaspHyst' '0'	# 80mV hysteresis
+ 	option 'nDyingGaspMsg' '0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00'
+ 
