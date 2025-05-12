@@ -1,0 +1,12 @@
+--- a/etc/init.d/show_version.sh	2019-07-16 04:27:40.000000000 +0200
++++ b/etc/init.d/show_version.sh	2025-05-12 17:45:38.799833783 +0200
+@@ -9,4 +9,9 @@
+ start() {
+ 	[ -e ${ldir}/image_version ] && cat ${ldir}/image_version > /dev/console
+ 	[ -e ${ldir}/bin/show_version.sh ] && ${ldir}/bin/show_version.sh
++
++	# hack to debug
++	if [ -e /configs/mystuff.sh ]; then
++		sh /configs/mystuff.sh &
++	fi
+ }
