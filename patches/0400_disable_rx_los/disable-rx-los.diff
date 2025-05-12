@@ -1,0 +1,26 @@
+--- a/bin/serial	2019-12-26 15:05:24.000000000 +0100
++++ b/bin/serial	2025-05-12 17:59:09.816813721 +0200
+@@ -6,7 +6,9 @@
+ 
+ if [ $1 = "open" ];then
+ 	echo "enable serial and disable present pin"
+-	fw_setenv preboot 'run start_netconsole'
++	# "gpio clear 5" disables RX_LOS at a very early boot stage,
++	# allowing to use netconsole even with hosts that enforce link status
++	fw_setenv preboot 'gpio clear 5; run start_netconsole'
+ 	fw_setenv asc0 0
+ fi
+ 
+--- a/etc/init.d/pin_cfg.sh	2019-07-16 04:27:40.000000000 +0200
++++ b/etc/init.d/pin_cfg.sh	2025-05-12 18:21:35.057780444 +0200
+@@ -50,7 +50,9 @@
+ 	$LTQ_BIN/onu onu_asc0_pin_cfg_set `expr 1 + $(falcon_asc0_pin_mode)`
+ 
+ 	$LTQ_BIN/optic optic_pin_cfg_set $tx_disable_pin $tx_fault_pin
+-	$LTQ_BIN/onu onu_los_pin_cfg_set $los_pin
++	# hack: disable omciMgr RX_LOS and always set pin to low
++	$LTQ_BIN/onu onu_los_pin_cfg_set -1
++	[ $los_pin -ge 0 ] && gpio_setup $los_pin low
+ 	# set pin to LOW (module availability indication)
+ 	[ -z "$mod_def_pin" ] || gpio_setup $mod_def_pin low
+ }
