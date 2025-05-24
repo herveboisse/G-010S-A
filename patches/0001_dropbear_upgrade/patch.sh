@@ -1,8 +1,13 @@
 #!/bin/sh
-
 set -e
 
-ROOTFS=$1
+ROOTFS="${1}"
 
-echo "Updating dropbear to 2020.81"
-cp -f dropbear "$ROOTFS/usr/sbin/dropbear"
+echo "Updating dropbear" >&2
+if [ ! -r dropbear ]; then
+	echo "WARNING: please compile dropbear first" >&2
+	exit 0
+fi
+
+cp -fv dropbear "${ROOTFS}/usr/sbin/"
+
