@@ -1,15 +1,18 @@
-DROPBEAR_RELEASE = 2020.81
+DROPBEAR_RELEASE = 2024.86
 DROPBEAR_TAR = dropbear-$(DROPBEAR_RELEASE).tar.bz2
 DROPBEAR_URL = https://matt.ucc.asn.au/dropbear/releases/$(DROPBEAR_TAR)
 DROPBEAR_DL = download/dropbear-$(DROPBEAR_RELEASE)
+DROPBEAR_LOCAL = local/dropbear-$(DROPBEAR_RELEASE)
 DROPBEAR_SRC = build/dropbear-$(DROPBEAR_RELEASE)
-DROPBEAR_PATCHES = $(addprefix https://raw.githubusercontent.com/openwrt/openwrt/openwrt-21.02/package/network/services/dropbear/patches/, \
+DROPBEAR_PATCHES = $(addprefix https://raw.githubusercontent.com/openwrt/openwrt/openwrt-24.10/package/network/services/dropbear/patches/, \
     100-pubkey_path.patch \
     110-change_user.patch \
     130-ssh_ignore_x_args.patch \
     140-disable_assert.patch \
+    160-lto-jobserver.patch \
     600-allow-blank-root-password.patch \
     900-configure-hardening.patch \
+    901-bundled-libs-cflags.patch \
     910-signkey-fix-use-of-rsa-sha2-256-pubkeys.patch \
 )
 
@@ -59,6 +62,7 @@ $(DROPBEAR_DL)/.dropbear_patches: | $(DROPBEAR_DL)
 $(DROPBEAR_SRC)/.dropbear_unpacked: $(DROPBEAR_DL)/$(DROPBEAR_TAR) $(DROPBEAR_DL)/.dropbear_patches | $(DROPBEAR_SRC)
 	tar -C build -xf $<
 	set -e; for p in $(DROPBEAR_DL)/*.patch; do patch -d $(DROPBEAR_SRC) -p1 < $$p; done
+	set -e; for p in $(DROPBEAR_LOCAL)/*.patch; do patch -d $(DROPBEAR_SRC) -p1 < $$p; done
 	@touch $@
 
 $(DROPBEAR_SRC)/.dropbear_autoreconf: $(DROPBEAR_SRC)/.dropbear_unpacked
