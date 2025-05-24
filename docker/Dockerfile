@@ -33,6 +33,10 @@ RUN apt-get -y install \
 	pkg-config \
 	diffutils patch
 
+# GDB dependencies
+RUN apt-get -y install \
+	libexpat1-dev ncurses-dev
+
 RUN mkdir -pv /opt
 WORKDIR /opt
 ADD "${repo_url}${toolchain}.tar.bz2" .
