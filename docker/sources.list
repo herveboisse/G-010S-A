@@ -1,0 +1,3 @@
+deb http://archive.debian.org/debian/ jessie contrib main non-free
+deb http://archive.debian.org/debian/ jessie-backports contrib main non-free
+deb http://archive.debian.org/debian-security/ jessie/updates contrib main non-free

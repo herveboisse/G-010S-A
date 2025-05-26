@@ -10,6 +10,8 @@ then
     exit 1
 fi
 
+# XXX detect docker env
+# even as "root" in the container, it will lack rights like "mknod" on the host fs
 if [ "$(id -u)" -ne 0 ]
 then
     echo "Not running as root, using fakeroot"

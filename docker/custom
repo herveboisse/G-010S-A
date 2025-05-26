@@ -1,0 +1,19 @@
+
+# completely disable authentication of packages
+# only use it if nothing else works
+#APT::Get::AllowUnauthenticated "true";
+
+# repository signing keys are now expired
+# so we are tricking apt to make it accept expired keys
+# this is not ideal for security, but still better than disabling authentication entirely
+# specially when fetching packages over plain unencrypted HTTP
+# use "Dir::Bin::gpg" before stretch and "Apt::Key::gpgvcommand" after
+Dir::Bin::gpg "/usr/bin/gpgvnoexpkeysig";
+#Apt::Key::gpgvcommand "/usr/bin/gpgvnoexpkeysig";
+
+# repos are not updated anymore and their Release file has expired
+Acquire::Check-Valid-Until "false";
+
+APT::Install-Recommends "false";
+APT::Install-Suggests "false";
+
