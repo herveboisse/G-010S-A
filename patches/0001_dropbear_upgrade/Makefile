@@ -2,7 +2,7 @@ DROPBEAR_RELEASE = 2020.81
 DROPBEAR_TAR = dropbear-$(DROPBEAR_RELEASE).tar.bz2
 DROPBEAR_URL = https://matt.ucc.asn.au/dropbear/releases/$(DROPBEAR_TAR)
 DROPBEAR_SRC = build/dropbear-$(DROPBEAR_RELEASE)
-DROPBEAR_PATCHES = $(addprefix https://raw.githubusercontent.com/openwrt/openwrt/master/package/network/services/dropbear/patches/, \
+DROPBEAR_PATCHES = $(addprefix https://raw.githubusercontent.com/openwrt/openwrt/openwrt-21.02/package/network/services/dropbear/patches/, \
     100-pubkey_path.patch \
     110-change_user.patch \
     130-ssh_ignore_x_args.patch \
