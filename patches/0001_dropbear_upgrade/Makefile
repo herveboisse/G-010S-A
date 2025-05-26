@@ -61,7 +61,7 @@ build/.dropbear_autoreconf: build/.dropbear_unpacked
 	cd $(DROPBEAR_SRC) && autoreconf
 	@touch $@
 
-build/.dropbear_configured: build/.dropbear_autoreconf | toolchain
+build/.dropbear_configured: build/.dropbear_autoreconf
 	cd $(DROPBEAR_SRC) && ./configure $(DROPBEAR_CONF)
 	printf "#define %s 0\n" $(DROPBEAR_DISABLED_FEATURES) > $(DROPBEAR_SRC)/localoptions.h
 	@touch $@
