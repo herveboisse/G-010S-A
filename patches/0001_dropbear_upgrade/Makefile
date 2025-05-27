@@ -1,6 +1,7 @@
 DROPBEAR_RELEASE = 2020.81
 DROPBEAR_TAR = dropbear-$(DROPBEAR_RELEASE).tar.bz2
 DROPBEAR_URL = https://matt.ucc.asn.au/dropbear/releases/$(DROPBEAR_TAR)
+DROPBEAR_DL = download/dropbear-$(DROPBEAR_RELEASE)
 DROPBEAR_SRC = build/dropbear-$(DROPBEAR_RELEASE)
 DROPBEAR_PATCHES = $(addprefix https://raw.githubusercontent.com/openwrt/openwrt/openwrt-21.02/package/network/services/dropbear/patches/, \
     100-pubkey_path.patch \
@@ -39,34 +40,37 @@ DROPBEAR_DISABLED_FEATURES = \
 all: dropbear
 
 clean:
-	rm -rf build
+	rm -rf $(DROPBEAR_SRC)
 
-build:
+$(DROPBEAR_DL):
 	mkdir -p $@
 
-build/$(DROPBEAR_TAR): | build
+$(DROPBEAR_SRC):
+	mkdir -p $@
+
+$(DROPBEAR_DL)/$(DROPBEAR_TAR): | $(DROPBEAR_DL)
 	wget -O $@ $(DROPBEAR_URL)
 
-build/.dropbear_patches: | build
-	rm -f build/*.patch
-	cd build && wget $(DROPBEAR_PATCHES)
+$(DROPBEAR_DL)/.dropbear_patches: | $(DROPBEAR_DL)
+	rm -f $(DROPBEAR_DL)/*.patch
+	cd $(DROPBEAR_DL) && wget $(DROPBEAR_PATCHES)
 	@touch $@
 
-build/.dropbear_unpacked: build/$(DROPBEAR_TAR) build/.dropbear_patches
+$(DROPBEAR_SRC)/.dropbear_unpacked: $(DROPBEAR_DL)/$(DROPBEAR_TAR) $(DROPBEAR_DL)/.dropbear_patches | $(DROPBEAR_SRC)
 	tar -C build -xf $<
-	set -e; for p in build/*.patch; do patch -d $(DROPBEAR_SRC) -p1 < $$p; done
+	set -e; for p in $(DROPBEAR_DL)/*.patch; do patch -d $(DROPBEAR_SRC) -p1 < $$p; done
 	@touch $@
 
-build/.dropbear_autoreconf: build/.dropbear_unpacked
+$(DROPBEAR_SRC)/.dropbear_autoreconf: $(DROPBEAR_SRC)/.dropbear_unpacked
 	cd $(DROPBEAR_SRC) && autoreconf
 	@touch $@
 
-build/.dropbear_configured: build/.dropbear_autoreconf
+$(DROPBEAR_SRC)/.dropbear_configured: $(DROPBEAR_SRC)/.dropbear_autoreconf
 	cd $(DROPBEAR_SRC) && ./configure $(DROPBEAR_CONF)
 	printf "#define %s 0\n" $(DROPBEAR_DISABLED_FEATURES) > $(DROPBEAR_SRC)/localoptions.h
 	@touch $@
 
-dropbear: build/.dropbear_configured
+dropbear: $(DROPBEAR_SRC)/.dropbear_configured
 	$(MAKE) -C $(DROPBEAR_SRC) PROGRAMS="dropbear dbclient dropbearkey scp" MULTI=1 SCPPROGRESS=1
 	$(OBJCOPY) --strip-all $(DROPBEAR_SRC)/dropbearmulti dropbear
 
