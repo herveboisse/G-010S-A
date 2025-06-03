@@ -21,7 +21,7 @@ RUN apt-get -y install \
 	wget curl ca-certificates \
 	bzip2 xz-utils \
 	fakeroot \
-	squashfs-tools
+	squashfs-tools bsdmainutils
 
 # enable bash completion
 RUN sed -i '/^# enable bash completion/I { :a n; s/^#//; t a; }' /etc/bash.bashrc
