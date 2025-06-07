@@ -16,7 +16,6 @@ debug () {
 
 ROOTFS="${1}"
 
-exit 0
 echo "Updating busybox" >&2
 if [ ! -d install ]; then
 	warn "please compile busybox first"
