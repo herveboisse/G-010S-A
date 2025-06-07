@@ -32,7 +32,7 @@ while read f; do
 	if [[ ${rf} =~ ^/(etc/(config|optic)/|usr/(cfg/|configs$)|lib/firmware/) ]]; then
 		# files that should not be executable
 		debug "${rf} should not be executable"
-		#chmod -x "${f}"
+		chmod -x "${f}"
 		continue
 	fi
 
@@ -58,7 +58,7 @@ while read f; do
 		elif [ "${hdr:32:4}" = "0001" ]; then
 			debug "${rf} is a relocatable ELF file"
 			#stripopt="--strip-unneeded"
-			#chmod -x "${f}"
+			chmod -x "${f}"
 		elif [ "${hdr:32:4}" = "0002" ]; then
 			debug "${rf} is an executable ELF file"
 			#stripopt="-s"
