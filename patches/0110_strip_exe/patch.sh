@@ -61,7 +61,9 @@ while read f; do
 			chmod -x "${f}"
 		elif [ "${hdr:32:4}" = "0002" ]; then
 			debug "${rf} is an executable ELF file"
-			#stripopt="-s"
+			if [ "${rf}" = "/sbin/omciMgr" ]; then
+				stripopt="-s"
+			fi
 		elif [ "${hdr:32:4}" = "0003" ]; then
 			debug "${rf} is a shared object ELF file"
 			#stripopt="--strip-unneeded"
