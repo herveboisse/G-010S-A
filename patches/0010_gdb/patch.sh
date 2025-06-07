@@ -3,6 +3,7 @@ set -e
 
 ROOTFS="${1}"
 
+exit 0
 echo "Installing gdbserver" >&2
 
 if [ ! -r gdbserver ]; then

@@ -32,7 +32,7 @@ while read f; do
 	if [[ ${rf} =~ ^/(etc/(config|optic)/|usr/(cfg/|configs$)|lib/firmware/) ]]; then
 		# files that should not be executable
 		debug "${rf} should not be executable"
-		chmod -x "${f}"
+		#chmod -x "${f}"
 		continue
 	fi
 
@@ -57,15 +57,15 @@ while read f; do
 			warn "${rf} is an ELF file but not MIPS machine"
 		elif [ "${hdr:32:4}" = "0001" ]; then
 			debug "${rf} is a relocatable ELF file"
-			stripopt="--strip-unneeded"
-			chmod -x "${f}"
+			#stripopt="--strip-unneeded"
+			#chmod -x "${f}"
 		elif [ "${hdr:32:4}" = "0002" ]; then
 			debug "${rf} is an executable ELF file"
-			stripopt="-s"
+			#stripopt="-s"
 		elif [ "${hdr:32:4}" = "0003" ]; then
 			debug "${rf} is a shared object ELF file"
-			stripopt="--strip-unneeded"
-			chmod -x "${f}"
+			#stripopt="--strip-unneeded"
+			#chmod -x "${f}"
 		else
 			warn "${rf} is an unhandled type ELF file"
 		fi
@@ -80,9 +80,9 @@ while read f; do
 		# https://en.wikipedia.org/wiki/Ar_(Unix)#File_header
 		debug "${rf} is an AR archive"
 
-		chmod -x "${f}"
-		mkdir -p "${dbgdir}$(dirname "${rf}")"
-		mv "${f}" "${dbgdir}${rf%.*}.a"
+		#chmod -x "${f}"
+		#mkdir -p "${dbgdir}$(dirname "${rf}")"
+		#mv "${f}" "${dbgdir}${rf%.*}.a"
 	else
 		warn "${rf} is an unknown file"
 	fi
