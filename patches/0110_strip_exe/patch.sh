@@ -61,13 +61,15 @@ while read f; do
 			chmod -x "${f}"
 		elif [ "${hdr:32:4}" = "0002" ]; then
 			debug "${rf} is an executable ELF file"
-			if [ "${rf}" = "/sbin/omciMgr" ]; then
+			if [[ ${rf} =~ ^/sbin/ ]]; then
 				stripopt="-s"
+			else
+				: #stripopt="-d"
 			fi
+			#mips-openwrt-linux-readelf -D -s "${f}" >&2
 		elif [ "${hdr:32:4}" = "0003" ]; then
 			debug "${rf} is a shared object ELF file"
-			#stripopt="--strip-unneeded"
-			#chmod -x "${f}"
+			#stripopt="-d"
 		else
 			warn "${rf} is an unhandled type ELF file"
 		fi
