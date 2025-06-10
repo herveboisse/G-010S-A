@@ -25,6 +25,7 @@ ROOTFS_ABS="$PWD/$ROOTFS"
 printf "\nPatching rootfs ...\n"
 for PATCH_DIR in patches/*
 do
+    [ -x "${PATCH_DIR}/patch.sh" ] || continue
     echo " - $PATCH_DIR :"
     cd "$PATCH_DIR" && { ./patch.sh "$ROOTFS_ABS"; cd ../..; }
 done
